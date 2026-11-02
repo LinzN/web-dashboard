@@ -1,0 +1,6 @@
+main: de.linzn.webdashboard.WebDashboardPlugin
+name: web-dashboard
+version: ${project.version}
+depend: [ web-api ]
+buildJobName: ${buildServer.jobName}
+buildNumber: ${buildServer.buildNumber}

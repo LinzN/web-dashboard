@@ -1,0 +1,106 @@
+<!--
+  ~ Copyright (c) 2026 MirraNET, Niklas Linz. All rights reserved.
+  ~
+  ~ This file is part of the MirraNET project and is licensed under the
+  ~ GNU Lesser General Public License v3.0 (LGPLv3).
+  ~
+  ~ You may use, distribute and modify this code under the terms
+  ~ of the LGPLv3 license. You should have received a copy of the
+  ~ license along with this file. If not, see <https://www.gnu.org/licenses/lgpl-3.0.html>
+  ~ or contact: niklas.linz@mirranet.de
+  -->
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>de.stem.plugins</groupId>
+    <name>web-dashboard</name>
+    <repositories>
+        <repository>
+            <id>Stem Builds Repository</id>
+            <url>https://builds.mirranet.de/plugin/repository/everything/</url>
+        </repository>
+    </repositories>
+    <build>
+        <finalName>${project.name}</finalName>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <includes>
+                    <include>plugin.yml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <!-- web files are copied as they are, ${...} in them must not be replaced -->
+                <directory>${project.basedir}/src/main/resources</directory>
+                <excludes>
+                    <exclude>plugin.yml</exclude>
+                </excludes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <source>25</source>
+                    <target>25</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                    <finalName>${project.name}</finalName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+
+                        <configuration>
+                            <outputDirectory>target/libraries</outputDirectory>
+                            <excludeScope>provided</excludeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <version>1.0-SNAPSHOT</version>
+    <artifactId>web-dashboard</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>de.linzn</groupId>
+            <artifactId>stem</artifactId>
+            <version>1.2.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.stem.plugins</groupId>
+            <artifactId>web-api</artifactId>
+            <version>1.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <buildServer.jobName>CUSTOM</buildServer.jobName>
+        <buildServer.buildNumber>SNAPSHOT</buildServer.buildNumber>
+    </properties>
+</project>
